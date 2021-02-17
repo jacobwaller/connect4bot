@@ -77,6 +77,7 @@ class Board {
   scoreBoard(): number {
     if (this.score === undefined) {
       // Calculate score
+      // TODO: Calculate the score
       this.score = 1;
     }
     // TODO: literally the programmatically hardest part
