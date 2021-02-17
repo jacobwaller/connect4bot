@@ -1,0 +1,19 @@
+{
+  "name": "connect4bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rm -rf ./built/ || true",
+    "build": "npx tsc --build",
+    "postbuild": "cp package.json ./built/package.json",
+    "prestart": "npm run build",
+    "start": "node ./built/bot.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.1.5"
+  }
+}
