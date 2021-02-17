@@ -9,7 +9,12 @@ const main = (): void => {
   const originalBoard = stringToBoard(inputString, 7, 6);
   // originalBoard.printBoard();
 
+  const start = Date.now();
   console.log(originalBoard.getBestMove(1));
+
+  const stop = Date.now();
+
+  console.log('took', stop - start, 'ms');
 };
 
 main();

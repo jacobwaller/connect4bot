@@ -80,7 +80,6 @@ class Board {
       // TODO: Calculate the score
       this.score = 1;
     }
-    // TODO: literally the programmatically hardest part
     return this.score;
   }
 
@@ -90,6 +89,8 @@ class Board {
 
   // Computationally the hardest part
   getBestMove(colorsMove: number): number {
+    const msToCompute = 4500;
+
     const t: Tree = new Tree(this);
 
     let cnt = 0;
@@ -97,8 +98,14 @@ class Board {
 
     const queue = [t];
 
+    const startTime = Date.now();
+
     // Temporary, until we set a computational time limit and do async
-    while (cnt < 50000 && winningMove < 0) {
+    while (
+      startTime + msToCompute > Date.now() &&
+      cnt < 100000 &&
+      winningMove < 0
+    ) {
       // Dequeue front
       const curr = queue.shift();
 
@@ -106,7 +113,6 @@ class Board {
       curr.data.scoreBoard();
 
       // This is comicly bad on purpose
-      // curr.data.printBoard();
       const currColor =
         curr.data.moveList.length === 0
           ? colorsMove
@@ -115,13 +121,12 @@ class Board {
           : 1;
 
       const possibleMoves = curr.data.getPossibleMoves();
-
-      // Add possible moves to queue
       const possibleNextBoards = possibleMoves.map((item) =>
         curr.data.makeMove(item, currColor)
       );
 
       // Possible optimization: if our score drops below a threshold, throw it away
+      // Add possible moves to queue and childred of curr
       possibleNextBoards.forEach((item) => {
         const n = curr.addChild(item);
         queue.push(n);
@@ -171,7 +176,7 @@ class Board {
       (a, b) => a.rollingAverageScore - b.rollingAverageScore
     );
 
-    console.log(this.rootScoresList);
+    console.log('went through', cnt, 'iterations');
 
     return this.rootScoresList[this.rootScoresList.length - 1].move;
   }
